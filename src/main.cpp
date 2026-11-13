@@ -2,6 +2,7 @@
 #include <TlHelp32.h>
 
 #include <cstdint>
+#include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -148,56 +149,56 @@ int main()
     }
 
     std::int32_t target{};
-    std::cout << "Enter the exact 32-bit integer currently shown by the test program: ";
-    if (!(std::cin >> target))
+    std::wcout << L"Enter the exact 32-bit integer currently shown by the test program: ";
+    if (!(std::wcin >> target))
     {
         CloseHandle(process);
         return 1;
     }
 
-    std::cout << "Scanning...\n";
+    std::wcout << L"Scanning...\n";
     auto results = ExactScan(process, target);
-    std::cout << "Found " << results.size() << " matching address(es).\n";
+    std::wcout << L"Found " << results.size() << L" matching address(es).\n";
 
     const std::size_t displayCount = (results.size() < 50) ? results.size() : 50;
     for (std::size_t i = 0; i < displayCount; ++i)
     {
-        std::cout << std::setw(3) << i << "  0x" << std::hex << results[i].address
-                  << std::dec << "  value=" << results[i].value << "\n";
+        std::wcout << std::setw(3) << i << L"  0x" << std::hex << results[i].address
+                  << std::dec << L"  value=" << results[i].value << "\n";
     }
 
     if (!results.empty())
     {
         std::size_t selected{};
-        std::cout << "Select a result index to change (0-" << displayCount - 1
-                  << "), or enter -1 to skip: ";
+        std::wcout << L"Select a result index to change (0-" << displayCount - 1
+                  << L"), or enter -1 to skip: ";
 
         long long choice = -1;
-        if (std::cin >> choice && choice >= 0 &&
+        if (std::wcin >> choice && choice >= 0 &&
             static_cast<std::size_t>(choice) < displayCount)
         {
             std::int32_t replacement{};
-            std::cout << "New 32-bit integer value: ";
-            if (std::cin >> replacement)
+            std::wcout << L"New 32-bit integer value: ";
+            if (std::wcin >> replacement)
             {
                 SIZE_T bytesWritten = 0;
                 const auto address = reinterpret_cast<LPVOID>(results[static_cast<std::size_t>(choice)].address);
                 if (WriteProcessMemory(process, address, &replacement, sizeof(replacement), &bytesWritten) &&
                     bytesWritten == sizeof(replacement))
                 {
-                    std::cout << "Value updated. Check MemoryScannerTest.exe.\n";
+                    std::wcout << L"Value updated. Check MemoryScannerTest.exe.\n";
                 }
                 else
                 {
-                    std::cout << "WriteProcessMemory failed. Win32 error: " << GetLastError() << "\n";
+                    std::wcout << L"WriteProcessMemory failed. Win32 error: " << GetLastError() << "\n";
                 }
             }
         }
     }
 
     CloseHandle(process);
-    std::cout << "Done. Press Enter to exit...";
-    std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
-    std::cin.get();
+    std::wcout << L"Done. Press Enter to exit...";
+    std::wcin.ignore((std::numeric_limits<std::streamsize>::max)(), L'\n');
+    std::wcin.get();
     return 0;
 }
