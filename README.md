@@ -4,7 +4,7 @@ A Windows C++ learning project for scanning and editing values in a dedicated te
 
 ## Safety scope
 
-The scanner intentionally attaches only to the companion `MemoryScannerTest` process included in this repository. It is not a general-purpose process editor and will refuse other process names. Use it to learn Windows process memory APIs on your own test program.
+The scanner intentionally attaches only to the companion `MemoryScannerTest.exe` process included in this repository. It is not a general-purpose process editor and refuses other process names. Use it to learn Windows process memory APIs on your own test program.
 
 ## Build
 
@@ -18,11 +18,18 @@ cmake --build build --config Release
 ```
 
 Executables:
-- `build/Release/MemoryScannerTest.exe`
-- `build/Release/MemoryScanner.exe`
+- `build/Release/MemoryScanner.exe` — Windows GUI scanner
+- `build/Release/MemoryScannerCLI.exe` — console version
+- `build/Release/MemoryScannerTest.exe` — dedicated test process
 
-Run `MemoryScannerTest.exe` first. It displays a changing integer value and waits for input.
-Then run `MemoryScanner.exe`, enter the displayed value for an exact scan, and choose a result to update the test value.
+## Run the GUI
+
+1. Start `MemoryScannerTest.exe`. It prints its current integer value (initially 100).
+2. Start `MemoryScanner.exe`.
+3. Confirm the target label shows the test process PID.
+4. Enter the current value in **Scan value (Int32)** and click **First Scan**.
+5. Select a result row, enter a replacement integer, and click **Change Selected**.
+6. Check the test process output to confirm the value changed. The test process can increment its value by pressing Enter in its console.
 
 ## Current milestone
 
@@ -30,7 +37,9 @@ Then run `MemoryScanner.exe`, enter the displayed value for an exact scan, and c
 - [x] Dedicated test target
 - [x] Exact 32-bit integer scan
 - [x] Result selection and value write-back, restricted to the test target
+- [x] First Win32 GUI: target refresh, exact scan, result list, selected-value write
 - [ ] Next Scan / changed-value filtering
-- [ ] Win32 graphical interface
+- [ ] Value types (Byte, 2 Bytes, 4 Bytes, Float, Double)
+- [ ] Freeze selected value
 - [ ] x86 and x64 build validation
 
