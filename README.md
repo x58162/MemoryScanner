@@ -1,45 +1,42 @@
 # MemoryScanner
 
-A Windows C++ learning project for scanning and editing values in a dedicated test process that you own.
+Windows C++ learning project for scanning values in the companion test process that you own.
+
+## Open directly in Visual Studio 2022 (CMake is not required)
+
+1. Clone or pull this GitHub repository.
+2. Open **MemoryScanner.sln** in Visual Studio 2022.
+3. Choose **x64** (recommended) and **Release** in the toolbar.
+4. Right-click the solution in Solution Explorer and select **Build Solution**.
+5. Executables are written to `bin\x64\Release\`.
+
+The solution contains three projects:
+- **MemoryScanner** — Win32 GUI scanner.
+- **MemoryScannerTest** — companion console process containing the sample integer.
+- **MemoryScannerCLI** — command-line version.
+
+For a test: start `MemoryScannerTest.exe` first, then start `MemoryScanner.exe`. The GUI currently offers an exact signed Int32 First Scan, a result list, and selected-result write-back. It intentionally only attaches to the companion test process named `MemoryScannerTest.exe`.
+
+## Architecture
+
+The Visual Studio solution includes **Win32** and **x64** configurations. Build the scanner and test target with the same architecture; x64 is recommended on 64-bit Windows.
+
+## Optional CMake
+
+`CMakeLists.txt` is retained for developers who prefer CMake. It is optional when using `MemoryScanner.sln`.
 
 ## Safety scope
 
-The scanner intentionally attaches only to the companion `MemoryScannerTest.exe` process included in this repository. It is not a general-purpose process editor and refuses other process names. Use it to learn Windows process memory APIs on your own test program.
+This project is intentionally restricted to the included `MemoryScannerTest.exe`, so it can be used to learn Windows process-memory APIs against a test program you own.
 
-## Build
+## Current implementation
 
-Requirements: Windows 10/11, Visual Studio 2022 with **Desktop development with C++**, and CMake.
-
-From a Developer PowerShell:
-
-```powershell
-cmake -S . -B build
-cmake --build build --config Release
-```
-
-Executables:
-- `build/Release/MemoryScanner.exe` — Windows GUI scanner
-- `build/Release/MemoryScannerCLI.exe` — console version
-- `build/Release/MemoryScannerTest.exe` — dedicated test process
-
-## Run the GUI
-
-1. Start `MemoryScannerTest.exe`. It prints its current integer value (initially 100).
-2. Start `MemoryScanner.exe`.
-3. Confirm the target label shows the test process PID.
-4. Enter the current value in **Scan value (Int32)** and click **First Scan**.
-5. Select a result row, enter a replacement integer, and click **Change Selected**.
-6. Check the test process output to confirm the value changed. The test process can increment its value by pressing Enter in its console.
-
-## Current milestone
-
-- [x] CMake project scaffold
-- [x] Dedicated test target
-- [x] Exact 32-bit integer scan
-- [x] Result selection and value write-back, restricted to the test target
-- [x] First Win32 GUI: target refresh, exact scan, result list, selected-value write
+- [x] Native Visual Studio solution and project files
+- [x] Win32 and x64 configurations
+- [x] Dedicated companion test process
+- [x] Exact signed 32-bit integer scan
+- [x] Result list and selected-result write-back
 - [ ] Next Scan / changed-value filtering
-- [ ] Value types (Byte, 2 Bytes, 4 Bytes, Float, Double)
-- [ ] Freeze selected value
-- [ ] x86 and x64 build validation
-
+- [ ] Additional value types (Byte, Int16, Float, Double)
+- [ ] Freeze selected test value
+- [ ] Windows build and runtime validation
