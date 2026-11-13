@@ -169,7 +169,6 @@ int main()
 
     if (!results.empty())
     {
-        std::size_t selected{};
         std::wcout << L"Select a result index to change (0-" << displayCount - 1
                   << L"), or enter -1 to skip: ";
 
